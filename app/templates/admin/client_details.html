@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Client Details: {{ client.full_name() }}</h1>
+        <div>
+            <a href="{{ url_for('admin.edit_client', id=client.id) }}" class="btn btn-warning me-2">
+                <i class="bi bi-pencil"></i> Edit
+            </a>
+            <a href="{{ url_for('admin.add_membership', id=client.id) }}" class="btn btn-primary">
+                <i class="bi bi-plus-lg"></i> Add Membership
+            </a>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Personal Information</h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Email:</dt>
+                        <dd class="col-sm-8">{{ client.email }}</dd>
+                        
+                        <dt class="col-sm-4">Phone:</dt>
+                        <dd class="col-sm-8">{{ client.phone if client.phone else 'N/A' }}</dd>
+                        
+                        <dt class="col-sm-4">Date of Birth:</dt>
+                        <dd class="col-sm-8">{{ client.date_of_birth.strftime('%Y-%m-%d') if client.date_of_birth else 'N/A' }}</dd>
+                        
+                        <dt class="col-sm-4">Address:</dt>
+                        <dd class="col-sm-8">{{ client.address if client.address else 'N/A' }}</dd>
+                        
+                        <dt class="col-sm-4">Member Since:</dt>
+                        <dd class="col-sm-8">{{ client.created_at.strftime('%Y-%m-%d') }}</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Current Memberships</h5>
+                </div>
+                <div class="card-body">
+                    {% if client.memberships.count() > 0 %}
+                        {% for membership in client.memberships %}
+                        <div class="mb-3 p-3 border rounded">
+                            <h6>{{ membership.plan.name }} ({{ membership.plan.duration|title }})</h6>
+                            <p class="mb-1">
+                                <strong>Status:</strong> 
+                                <span class="badge bg-{{ 'success' if membership.status == 'active' else 'warning' if membership.status == 'expired' else 'danger' }}">
+                                    {{ membership.status|title }}
+                                </span>
+                            </p>
+                            <p class="mb-1"><strong>Start Date:</strong> {{ membership.start_date.strftime('%Y-%m-%d') }}</p>
+                            <p class="mb-1"><strong>End Date:</strong> {{ membership.end_date.strftime('%Y-%m-%d') }}</p>
+                            <p class="mb-1"><strong>Renewal Date:</strong> {{ membership.renewal_date.strftime('%Y-%m-%d') }}</p>
+                            <p class="mb-1"><strong>Total Price:</strong> ${{ "%.2f"|format(membership.total_price) }}</p>
+                            
+                            {% if membership.options.count() > 0 %}
+                            <div class="mt-2">
+                                <h6>Options:</h6>
+                                <ul class="list-group">
+                                    {% for option in membership.options %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ option.option.option_name }}
+                                        <span class="badge bg-primary rounded-pill">
+                                            {{ option.hours_remaining }}/{{ option.option.hours_included }} hrs left
+                                        </span>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="mb-0">No memberships found.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

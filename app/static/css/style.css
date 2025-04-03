@@ -1,0 +1,70 @@
+/* Custom CSS for Gym Argenté */
+
+/* General styles */
+body {
+    padding-top: 56px;
+}
+
+/* Card styles */
+.card {
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header {
+    border-radius: 0.5rem 0.5rem 0 0 !important;
+}
+
+/* Table styles */
+.table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.1);
+}
+
+/* Badge styles */
+.badge {
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+}
+
+/* Form styles */
+.form-control, .form-select {
+    border-radius: 0.25rem;
+}
+
+.invalid-feedback {
+    display: block;
+}
+
+/* Button styles */
+.btn {
+    border-radius: 0.25rem;
+}
+
+/* Navbar styles */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom spacing */
+.mb-6 {
+    margin-bottom: 4rem;
+}
+
+/* Custom width */
+.w-35 {
+    width: 35%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .table-responsive {
+        overflow-x: auto;
+    }
+}
+/* Style for select dropdowns */
+select.form-select:invalid {
+    color: #6c757d; /* Gray color for placeholder */
+}
+select.form-select option {
+    color: #000; /* Black color for actual options */
+}

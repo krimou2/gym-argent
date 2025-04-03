@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>My Appointments</h1>
+        <a href="{{ url_for('specialist.schedule') }}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Schedule New
+        </a>
+    </div>
+    
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Date & Time</th>
+                            <th>Client</th>
+                            <th>Service</th>
+                            <th>Duration</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                        <tr>
+                            <td>{{ appointment.appointment_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>{{ appointment.client.full_name() }}</td>
+                            <td>{{ appointment.option.option_name }}</td>
+                            <td>{{ appointment.duration }} mins</td>
+                            <td>
+                                <span class="badge bg-{{ 'success' if appointment.status == 'completed' else 'warning' if appointment.status == 'cancelled' else 'primary' }}">
+                                    {{ appointment.status|title }}
+                                </span>
+                            </td>
+                            <td>
+                                {% if appointment.status == 'scheduled' %}
+                                <a href="{{ url_for('specialist.complete_appointment', id=appointment.id) }}" class="btn btn-sm btn-success me-1">
+                                    Complete
+                                </a>
+                                <a href="{{ url_for('specialist.cancel_appointment', id=appointment.id) }}" class="btn btn-sm btn-danger">
+                                    Cancel
+                                </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Admin Dashboard</h1>
+    
+    <!-- Expiring Memberships Section -->
+    <div class="card mb-4">
+        <div class="card-header bg-warning text-white">
+            <h5 class="mb-0">Memberships Expiring Soon (Next 30 Days)</h5>
+        </div>
+        <div class="card-body">
+            {% if expiring_memberships %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Client</th>
+                            <th>Plan</th>
+                            <th>End Date</th>
+                            <th>Renewal Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for membership in expiring_memberships %}
+                        <tr>
+                            <td>{{ membership.client.full_name() }}</td>
+                            <td>{{ membership.plan.name }}</td>
+                            <td>{{ membership.end_date.strftime('%Y-%m-%d') }}</td>
+                            <td>{{ membership.renewal_date.strftime('%Y-%m-%d') }}</td>
+                            <td>
+                                <a href="{{ url_for('admin.client_details', id=membership.client.id) }}" class="btn btn-sm btn-info">View</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="mb-0">No memberships expiring in the next 30 days.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Recent Clients Section -->
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Recent Clients</h5>
+        </div>
+        <div class="card-body">
+            {% if recent_clients %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Joined</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for client in recent_clients %}
+                        <tr>
+                            <td>{{ client.full_name() }}</td>
+                            <td>{{ client.email }}</td>
+                            <td>{{ client.phone if client.phone else 'N/A' }}</td>
+                            <td>{{ client.created_at.strftime('%Y-%m-%d') }}</td>
+                            <td>
+                                <a href="{{ url_for('admin.client_details', id=client.id) }}" class="btn btn-sm btn-info">View</a>
+                                <a href="{{ url_for('admin.edit_client', id=client.id) }}" class="btn btn-sm btn-warning">Edit</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="mb-0">No clients found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

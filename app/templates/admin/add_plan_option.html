@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h1 class="mb-4">Add Option to Plan: {{ plan.name }}</h1>
+            
+            <form method="POST" action="{{ url_for('admin.add_plan_option', id=plan.id) }}">
+                {{ form.hidden_tag() }}
+                
+                <div class="mb-3">
+                    <div class="form-group">
+                        {{ form.option_name.label(class="form-label") }}
+                        {{ form.option_name(class="form-control") }}
+                        {% for error in form.option_name.errors %}
+                        <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form.option_price.label(class="form-label") }}
+                            {{ form.option_price(class="form-control") }}
+                            {% for error in form.option_price.errors %}
+                            <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            {{ form.hours_included.label(class="form-label") }}
+                            {{ form.hours_included(class="form-control") }}
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Add Option</button>
+                    <a href="{{ url_for('admin.plans') }}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

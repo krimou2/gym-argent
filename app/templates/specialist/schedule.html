@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="my-4">Schedule Appointment</h1>
+    
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        
+        <div class="mb-3">
+            {{ form.client_id.label(class="form-label") }}
+            <select class="form-select" id="client_id" name="client_id" required>
+                <option value="" disabled selected>Select a client</option>
+                {% for client_id, client_name in form.client_id.choices %}
+                    <option value="{{ client_id }}">{{ client_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            {{ form.option_id.label(class="form-label") }}
+            <select class="form-select" id="option_id" name="option_id" required>
+                <option value="" disabled selected>Select a service</option>
+                {% for option_id, option_name in form.option_id.choices %}
+                    <option value="{{ option_id }}">{{ option_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="mb-3">
+            {{ form.appointment_date.label(class="form-label") }}
+            {{ form.appointment_date(class="form-control", type="datetime-local") }}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.duration.label(class="form-label") }}
+            {{ form.duration(class="form-control", placeholder="Minutes") }}
+        </div>
+        
+        <div class="mb-3">
+            {{ form.notes.label(class="form-label") }}
+            {{ form.notes(class="form-control", rows=3) }}
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Schedule Appointment</button>
+    </form>
+</div>
+
+<script>
+// Initialize datetime picker
+document.addEventListener('DOMContentLoaded', function() {
+    flatpickr("#appointment_date", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+        minDate: "today"
+    });
+});
+</script>
+{% endblock %}
